@@ -1,0 +1,623 @@
+local DiscordLib = loadstring(game:HttpGet"https://raw.githubusercontent.com/kickTh/New-Ui/main/discord%20lib%20(1).txt")()
+
+local win = DiscordLib:Window("VietHub")
+
+local serv = win:Server("Steve One Piece", "http://www.roblox.com/asset/?id=6031075938")
+local tab = serv:Channel("Farm")
+_G.autoattacka = false
+_G.autoequipa = false
+_G.autofarma = false
+_G.killplayerbehinda = false
+_G.killplayera = false
+_G.autobuyfruit = false
+_G.mob = ""
+_G.player = ""
+_G.bringmob = false
+_G.hquest = false
+_G.questdone = false
+_G.antiafka = false
+_G.positionbasex = 0
+_G.positionbasey = 0
+_G.positionbasez = 0
+if game:GetService("Players").LocalPlayer.Name == "xphamtrung" then
+    game:GetService("Players").LocalPlayer:Kick("Sao dùng script của anh chi em")
+end
+for i,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do 
+    if v.ClassName == "Script" then 
+        for i,b in pairs(v:GetChildren()) do
+            if b.Name == "" then
+                v:Destroy()
+            end
+        end
+    end
+end
+game:GetService("StarterGui"):SetCore("SendNotification", {
+    Title = "Viet Hub";
+    Text = "Welcome "..game:GetService("Players").LocalPlayer.Name;
+})
+
+tab:Button("BaseFarm", function()
+    local y = math.random(5000,10000)
+    local z = math.random(14000, 20000)
+    local add = y + 6
+    local addz = z + -2
+    local a = "ab"..game.Players.LocalPlayer.Name
+    if game:GetService("Workspace"):FindFirstChild(a) then
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(_G.positionbasex,_G.positionbasey,_G.positionbasez)
+    else
+        local safezone = Instance.new("Part")
+        safezone.Position = Vector3.new(129.35, y, z)
+        safezone.CanCollide = true
+        safezone.Anchored = true
+        safezone.Name = "ab"..game.Players.LocalPlayer.Name
+        safezone.Parent = game:GetService("Workspace")
+        safezone.Size = Vector3.new(259.137, 6.377, 272.82)
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(124.97, add, addz)
+        _G.positionbasex = 124.97
+        _G.positionbasey = add
+        _G.positionbasez = addz
+    end
+end)
+
+function getAllToolInBackpack()
+    local tool = game:GetService("Players").LocalPlayer.Backpack:GetChildren()
+    local droptool = {}
+    for i=1, #tool do
+        if tool[i]:IsA("Tool") then
+            if tool[i].Name == "Thief!" or tool[i].Name == "Let them pay back!" or tool[i].Name == "Annoying noobs...." or tool[i].Name == "Marines!" or tool[i].Name == "The Strongest..." then
+                local a = 1
+            else
+                droptool[i] = tool[i].Name
+            end
+        end
+    end
+    return droptool
+end
+local choosetool = ""
+local weadrop = tab:Dropdown("Choose Weapon", getAllToolInBackpack(), function(currentOption)
+    choosetool = currentOption
+end)
+tab:Button("Weapon Refresh", function()
+    weadrop:Clear()
+    updatetool()
+end)
+function updatetool()
+    local tool = game:GetService("Players").LocalPlayer.Backpack:GetChildren()
+    for i=1, #tool do
+        if tool[i]:IsA("Tool") then
+            if tool[i].Name == "Thief!" or tool[i].Name == "Let them pay back!" or tool[i].Name == "Annoying noobs...." or tool[i].Name == "Marines!" or tool[i].Name == "The Strongest..." then
+                local a = 1
+            else
+                weadrop:Add(tool[i].Name)
+            end
+        end
+    end
+end
+tab:Toggle("Auto Equip",false, function(state)
+    _G.autoequipa = state
+    if state then
+        autoequip()
+    else
+        _G.autoequipa = false
+    end
+end)
+tab:Toggle("Auto Attack",false, function(state)
+    _G.autoattacka = state
+    if state then
+        autoattack()
+    else
+        _G.autoattacka = false
+    end
+end)
+
+tab:Dropdown("Choose Mobs",{"Thief(lvl:5)","Buggy pirate(Lvl:30)","Attacking Noob(Lvl:100)","Marine(Lvl:200)","Luffy(Lvl:1000)"}, function(mobs)
+    _G.mob = mobs
+end)
+tab:Toggle("Bring Mob",false, function(stage)
+    _G.bringmob = stage
+end)
+tab:Toggle("Auto Farm",false, function(state)
+    _G.autofarma = state
+    if state then
+        autoquest()
+        autofarm()
+    else
+        _G.hquest = false
+        _G.questdone = false
+    end
+
+
+end)
+local istp = serv:Channel("Island")
+istp:Button("Thief Island", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-5.90421963, 2.17067051, 620.890015, 0.998948336, -9.95599514e-09, -0.045850385, 1.35335663e-08, 1, 7.77166278e-08, 0.045850385, -7.8255411e-08, 0.998948336)
+end)
+istp:Button("Buggy Island", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-4242.94922, 3.5320816, 1329.68445, 0.996583939, 4.90778795e-09, -0.0825857446, -4.96942443e-09, 1, -5.40783029e-10, 0.0825857446, 9.49339385e-10, 0.996583939)
+end)
+istp:Button("Noob Island", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(3006.07324, 2.20113134, 1610.9696, -0.0655324534, 2.54224002e-08, -0.997850418, -1.60057301e-08, 1, 2.65283191e-08, 0.997850418, 1.7709791e-08, -0.0655324534)
+end)
+istp:Button("Marine Island", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(3329.09717, 31.508112, 6152.17529, -0.999876976, -7.14054949e-08, -0.0156836212, -7.19688202e-08, 1, 3.53534233e-08, 0.0156836212, 3.64778074e-08, -0.999876976)
+end)
+istp:Button("Fishman Island", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-5226.40869, 2.20018864, -4555.30762, 0.855154872, 5.32142757e-08, 0.518372595, -8.78276865e-08, 1, 4.22321662e-08, -0.518372595, -8.16425043e-08, 0.855154872)
+end)
+istp:Button("Luffy Island", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2368.12646, 18.8802929, -3923.34375, 0.999465644, 2.38938984e-08, -0.0326875374, -2.66977196e-08, 1, -8.53400408e-08, 0.0326875374, 8.61671197e-08, 0.999465644)
+end)
+istp:Button("Coconut Island", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-4791.12109, -1.50116682, -2159.12671, -0.387800545, -4.51920208e-08, -0.921743333, -6.05890094e-08, 1, -2.35375417e-08, 0.921743333, 4.67196415e-08, -0.387800545)
+end)
+istp:Button("Blackleg Island", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1324.74597, 37.6378441, 5079.48877, -0.994995296, -4.58682736e-09, -0.0999219045, -4.84866369e-09, 1, 2.3775546e-09, 0.0999219045, 2.85014345e-09, -0.994995296)
+end)
+istp:Button("Sword Island", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-4609.56348, 58.7146263, 4049.15186, -0.537827492, -1.5990647e-08, 0.843054891, -6.40275104e-08, 1, -2.18788916e-08, -0.843054891, -6.57457733e-08, -0.537827492)
+end)
+istp:Button("Fruit Island", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2205.99023, 32.9288406, -3351.28979, 0.998221159, 3.11733466e-08, 0.0596196577, -2.57169397e-08, 1, -9.228755e-08, -0.0596196577, 9.05901487e-08, 0.998221159)
+end)
+local item = serv:Channel("Item")
+item:Button("Wooden Sword | Price: 100", function()
+    for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+        if v.Name == "Wooden Sword|Price:100" then
+            fireclickdetector(v.Head.ClickDetector)
+            fireclickdetector(v.Head.ClickDetector)
+        end
+    end
+end)
+item:Button("Katana | Price: 5000", function()
+    for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+        if v.Name == "Katana|Price:5000" then
+            fireclickdetector(v.Head.ClickDetector)
+            fireclickdetector(v.Head.ClickDetector)
+        end
+    end
+end)
+item:Button("Cutlass | Price: 7500", function()
+    for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+        if v.Name == "Cutlass|Price:7500" then
+            fireclickdetector(v.Head.ClickDetector)
+            fireclickdetector(v.Head.ClickDetector)
+        end
+    end
+end)
+item:Button("Pipe | Price: 30000", function()
+    for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+        if v.Name == "Pipe|Price:30000" then
+            fireclickdetector(v.Head.ClickDetector)
+            fireclickdetector(v.Head.ClickDetector)
+        end
+    end
+end)
+item:Button("Jitte | Price: 65000", function()
+    for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+        if v.Name == "Jitte|Price:65000" then
+            fireclickdetector(v.Head.ClickDetector)
+            fireclickdetector(v.Head.ClickDetector)
+        end
+    end
+end)
+item:Button("Nonosama Bo | Price: 150000", function()
+    for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+        if v.Name == "Nonosama Bo|Price:150000" then
+            fireclickdetector(v.Head.ClickDetector)
+            fireclickdetector(v.Head.ClickDetector)
+        end
+    end
+end)
+item:Button("Bisento | Price: 3000000", function()
+    for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+        if v.Name == "Bisento|Price:3000000" then
+            fireclickdetector(v.Head.ClickDetector)
+            fireclickdetector(v.Head.ClickDetector)
+        end
+    end
+end)
+item:Button("Gryphon | Price: 7500000", function()
+    for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+        if v.Name == "Gryphon|Price:7500000" then
+            fireclickdetector(v.Head.ClickDetector)
+            fireclickdetector(v.Head.ClickDetector)
+        end
+    end
+end)
+item:Button("BlackLeg | Price: 10000", function()
+    for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+        if v.Name == "BlackLeg|Price:10000" then
+            fireclickdetector(v.Head.ClickDetector)
+            fireclickdetector(v.Head.ClickDetector)
+        end
+    end
+end)
+item:Button("Ryusoken | Price: 75000", function()
+    for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+        if v.Name == "Ryusoken|Price:75000" then
+            fireclickdetector(v.Head.ClickDetector)
+            fireclickdetector(v.Head.ClickDetector)
+        end
+    end
+end)
+item:Button("Flintlock | Price: 2500", function()
+    for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+        if v.Name == "Flintlock|Price:2500" then
+            fireclickdetector(v.Head.ClickDetector)
+            fireclickdetector(v.Head.ClickDetector)
+        end
+    end
+end)
+item:Button("Rifle | Price: 10000", function()
+    for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+        if v.Name == "Rifle|Price:10000" then
+            fireclickdetector(v.Head.ClickDetector)
+            fireclickdetector(v.Head.ClickDetector)
+        end
+    end
+end)
+local pl = serv:Channel("Players")
+local listpl = {}
+function getallplayer()
+    listpl = {}
+    for i,v in pairs(game:GetService("Players"):GetDescendants()) do
+        if v:IsA("Player") then
+            listpl[i] = v.Name
+        end
+        
+    end
+    return listpl
+end
+
+local choosepl = pl:Dropdown("Choose Players", getallplayer(), function(a)
+    _G.player = a
+end)
+pl:Button("Player Refresh", function()
+    choosepl:Clear()
+    updateplayer()
+end)
+function updateplayer()
+    listpl = {}
+    for i,v in pairs(game:GetService("Players"):GetDescendants()) do
+        if v:IsA("Player") then
+            choosepl:Add(v.Name)
+        end
+    end
+end
+pl:Toggle("Kill Player Behind",false, function(stage)
+    _G.killplayerbehinda = stage
+    if stage then
+        killplayerbehind()
+    end
+end)
+pl:Toggle("Kill Player", false, function(stage)
+    _G.killplayera = stage
+    if stage then
+        killplayer()
+    end
+end)
+pl:Button("Teleport To Player", function()
+    tppl()
+end)
+local fruit = serv:Channel("Fruits")
+fruit:Button("Buy Fruit", function()
+    for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+        if v.Name == "Fruit Seller" then
+            print("a")
+            fireclickdetector(v.Head.ClickDetector)
+            for a,b in pairs(v:GetDescendants()) do
+                if b.Name == "Beli|Price:1500000" then
+                    print("b")
+                    fireclickdetector(b.Head.ClickDetector)
+                    fireclickdetector(b.Head.ClickDetector)
+                end
+            end
+        end
+    end
+end)
+fruit:Button("Remove Fruit", function()
+    for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+        if v.Name == "Fruit Remover" then
+            fireclickdetector(v.Head.ClickDetector)
+            for a,b in pairs(v:GetDescendants()) do
+                if b.Name == "Beli|Price:150000" then
+                    fireclickdetector(b.Head.ClickDetector)
+                    fireclickdetector(b.Head.ClickDetector)
+                end
+            end
+        end
+    end
+end)
+local mics = serv:Channel("Mics")
+mics:Button("Click to coby link discord", function()
+    setclipboard("https://discord.gg/EBZNud75ZJ")
+end)
+mics:Button("Fast Mode", function()
+    for key, object in pairs(game:GetService("Workspace"):GetDescendants()) do
+        if object:IsA("BasePart") then
+             object.Material = "SmoothPlastic"
+        end
+   end
+end)
+mics:Button("Rejoin",function()
+    game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId,game.JobId,game:GetService('Players').LocalPlayer)
+end)
+mics:Button("Teleport to Hop Server",function()
+    local Servers = game.HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/2116452049/servers/Public?sortOrder=Asc&limit=100"))
+    for i,v in pairs(Servers.data) do
+    if v.playing ~= v.maxPlayers then
+        game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, v.id)
+    end
+end
+end)
+mics:Toggle("AntiAfk",false, function(stage)
+    _G.antiafka = stage
+    if stage then
+        antiafk()
+    end
+end)
+function tppl()
+    local ccc = _G.player
+    local v = game:GetService("Workspace")[ccc]
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:FindFirstChild("HumanoidRootPart").CFrame*CFrame.new(0,0,2)
+end
+function killplayerbehind()
+    spawn(function()
+        while wait(0.0000001) and _G.killplayerbehinda do
+            local ccc = _G.player
+            local v = game:GetService("Workspace")[ccc]
+            v:FindFirstChild("HumanoidRootPart").CanCollide = false
+            v:FindFirstChild("HumanoidRootPart").Size = Vector3.new(15,15,15)
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:FindFirstChild("HumanoidRootPart").CFrame*CFrame.new(0,0,10)
+        end
+    end)
+end
+function killplayer()
+    spawn(function()
+        while wait(0.0000001) and _G.killplayera do
+            local ccc = _G.player
+            local v = game:GetService("Workspace")[ccc]
+            v:FindFirstChild("HumanoidRootPart").CanCollide = false
+            v:FindFirstChild("HumanoidRootPart").Anchored = true
+            v:FindFirstChild("HumanoidRootPart").Size = Vector3.new(15,15,15)
+            v:FindFirstChild("HumanoidRootPart").CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame*CFrame.new(0,0,-10)
+        end
+    end)
+end
+function autoquest()
+    local cc = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(checkquest())
+    if cc == nil then
+        for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do 
+            if _G.mob == "Thief(lvl:5)" then 
+                if v.Name == "Big head boy" then 
+                    fireclickdetector(v.Head.ClickDetector)
+                    fireclickdetector(v.Head.ClickDetector)
+                end
+            else if _G.mob == "Buggy pirate(Lvl:30)" then 
+                if v.Name == "Bob" then
+                    fireclickdetector(v.Head.ClickDetector)
+                    fireclickdetector(v.Head.ClickDetector) 
+                end
+            else if _G.mob == "Attacking Noob(Lvl:100)" then 
+                if v.Name == "Sad noob" then
+                    fireclickdetector(v.Head.ClickDetector)
+                    fireclickdetector(v.Head.ClickDetector) 
+                end
+            else if _G.mob == "Marine(Lvl:200)" then 
+                if v.Name == "Injured pirate" then
+                    fireclickdetector(v.Head.ClickDetector)
+                    fireclickdetector(v.Head.ClickDetector) 
+                end
+            else if _G.mob == "Luffy(Lvl:1000)" then 
+                if v.Name == "That noob" then 
+                    fireclickdetector(v.Head.ClickDetector)
+                    fireclickdetector(v.Head.ClickDetector)
+                end
+            end
+        end
+    end
+    end
+    end
+    end
+    end
+    end
+    
+
+function checkquest()
+    if _G.mob == "Thief(lvl:5)" then
+        return "Thief!"
+    elseif _G.mob == "Buggy pirate(Lvl:30)" then 
+        return "Let them pay back!"
+    elseif _G.mob == "Attacking Noob(Lvl:100)" then
+        return "Annoying noobs...."
+    elseif _G.mob == "Marine(Lvl:200)" then
+        return "Marines!"
+    elseif _G.mob == "Luffy(Lvl:1000)" then 
+        return "The Strongest..."
+    end
+end
+function antiafk()
+    spawn(function()
+        while wait(0.1) and _G.antiafka do
+            local vu = game:GetService("VirtualUser")
+            game:GetService("Players").LocalPlayer.Idled:connect(function()
+                vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+                wait(1)
+                vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+            end)
+        end
+    end)
+end
+function autoequip()
+    spawn(function()
+            if _G.hquest then
+                local Players = game:GetService("Players")
+                local player = Players:FindFirstChildOfClass("Player")
+                local name = game:GetService("Players").LocalPlayer.Name
+                if player and player.Character then
+                    local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+                    if humanoid then
+                        local tool = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(checkquest())
+                        if tool then
+                            humanoid:EquipTool(tool)	
+                        end
+                    end
+                end
+            else
+                autoequipelse()
+        end
+    end)
+end
+function autoequipelse()
+    spawn(function()
+        while wait(0.4) and _G.autoequipa do
+            local Players = game:GetService("Players")
+            local player = Players:FindFirstChildOfClass("Player")
+            local name = game:GetService("Players").LocalPlayer.Name
+            if player and player.Character then
+                local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+                if humanoid then
+                    local tool = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(choosetool)
+                    if tool then
+                        if game:GetService("Workspace"):FindFirstChild(choosetool) then
+                            humanoid:EquipTool(tool)
+                        else
+                            humanoid:EquipTool(tool)	
+                        end
+                    end
+                end
+            end
+        end
+    end)
+end
+function autofarm()
+    spawn(function()
+        while wait(0.0000001) and _G.autofarma do
+            if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(checkquest()) == nil then
+                autoquest()
+            end
+            local mob = _G.mob
+            if _G.bringmob then
+                for i,v in pairs(game:GetService("Workspace")["Npcs"]:GetDescendants()) do
+                    if v.Name == mob then
+                        if v:FindFirstChild("HumanoidRootPart") then
+                            v:FindFirstChild("HumanoidRootPart").Size = Vector3.new(15,15,15)
+                            v:FindFirstChild("HumanoidRootPart").CanCollide = false
+                            v:FindFirstChild("HumanoidRootPart").Anchored = true
+                            v:FindFirstChild("HumanoidRootPart").CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame*CFrame.new(0,0,-10)
+                        end
+                        claimquest()
+                    end
+                end
+            else
+                local v = game:GetService("Workspace")["Npcs"][_G.mob]
+                if v:FindFirstChild("HumanoidRootPart") then
+                    v:FindFirstChild("HumanoidRootPart").Size = Vector3.new(15,15,15)
+                    v:FindFirstChild("HumanoidRootPart").CanCollide = false
+                    v:FindFirstChild("HumanoidRootPart").Anchored = true
+                    v:FindFirstChild("HumanoidRootPart").CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame*CFrame.new(0,0,-10)
+                end
+                claimquest()
+            end
+        end
+    end)
+end
+function claimquest()
+    if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(checkquest()) then
+        if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(checkquest()).ToolTip == "Finished!,Click to get reward!" then
+            _G.hquest = true
+            autoequip()
+            autoattack()
+            if not game:GetService("Players").LocalPlayer.Parent:FindFirstChild(checkquest()) then
+                if _G.questdone then
+                    _G.questdone = false
+                    autoquest()
+                end
+            end
+        end
+    end
+end
+
+function autoattack()
+    spawn(function()
+        --// Setting \--
+local range = 99e9
+
+--// Variable \--
+local player = game:GetService("Players").LocalPlayer
+
+--// Script \--
+game:GetService("RunService").RenderStepped:Connect(function()
+    local p = game.Players:GetPlayers()
+    for i = 2, #p do local v = p[i].Character
+        if v and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 and v:FindFirstChild("HumanoidRootPart") and player:DistanceFromCharacter(v.HumanoidRootPart.Position) <= range then
+            local tool = player.Character and player.Character:FindFirstChildOfClass("Tool")
+            if tool and tool:FindFirstChild("Handle") then
+                tool:Activate()
+                for i,v in next, v:GetChildren() do
+                    if v:IsA("BasePart") then
+                        firetouchinterest(tool.Handle,v,0)
+                        firetouchinterest(tool.Handle,v,1)
+                    end
+                end
+            end
+        end
+    end
+end)
+    end)
+end
+function autoattackelse()
+    spawn(function()
+        while wait(0.3) and _G.autoattacka do
+            local state = _G.autoattacka
+            local range = 99e9
+            local player = game:GetService("Players").LocalPlayer
+            local p = game.Players:GetPlayers()
+            for i = 2, #p do local v = p[i].Character
+                if state then
+                    if v and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 and v:FindFirstChild("HumanoidRootPart") and player:DistanceFromCharacter(v.HumanoidRootPart.Position) <= range then
+                        local tool = player.Character and player.Character:FindFirstChildOfClass("Tool")
+                        if tool and tool:FindFirstChild("Handle") then
+                            for i,v in next, v:GetChildren() do
+                                tool:Activate()
+                                if v:IsA("Part") then
+                                    firetouchinterest(tool.Handle,v,0)
+                                    firetouchinterest(tool.Handle,v,1)
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end)
+end
+function autoattackn(num)
+    spawn(function()
+        while wait() and num do
+            local state = _G.autoattacka
+            local range = 99e9
+            local player = game:GetService("Players").LocalPlayer
+            
+                local p = game.Players:GetPlayers()
+                for i = 2, #p do local v = p[i].Character
+                    if state then
+                        if v and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 and v:FindFirstChild("HumanoidRootPart") and player:DistanceFromCharacter(v.HumanoidRootPart.Position) <= range then
+                            local tool = player.Character and player.Character:FindFirstChildOfClass("Tool")
+                            if tool and tool:FindFirstChild("Handle") then
+                                tool:Activate()
+                                for i,v in next, v:GetChildren() do
+                                    if v:IsA("BasePart") then
+                                        firetouchinterest(tool.Handle,v,0)
+                                        firetouchinterest(tool.Handle,v,1)
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+        end
+    end)
+end
+
+
